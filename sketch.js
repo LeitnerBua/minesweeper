@@ -74,7 +74,7 @@ function mousePressed() {
                 setCellValues();
             }
             let current = grid[x][y];
-            if (mouseButton == RIGHT && amountFlags > 0 && !current.marked) {
+            if (mouseButton == RIGHT && amountFlags > 0 && !current.marked && !current.isRevealed) {
                 current.marked = true;
                 amountFlags--;
             }
@@ -87,8 +87,6 @@ function mousePressed() {
                         current.color = "#ff0000";
                         game_over();
                         gameOver = true;
-                        // stop the timer
-                        clearInterval(timer);
                     } else if (current.value == 0) {
                         reveal_empty_cells(current);
                     }
@@ -138,6 +136,9 @@ function game_over() {
             }
         }
     }
+
+    // stop the timer
+    clearInterval(timer);
 }
 
 function showMessage(message, color) {
