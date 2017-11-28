@@ -1,36 +1,12 @@
 let rows = 16;
 let cols = 16;
-let grid = new Array(cols);
 
-let amountBombs = 40;
-
-let amountFlags = amountBombs;
-
-let bombsPlaced = false;
-
-let gameOver = false;
-let youWon = false;
-
-let time = "000";
+let grid, amountBombs, amountFlags, bombsPlaced, gameOver, youWon, time, timer;
 
 function setup() {
     createCanvas(640, 640);
 
-    for (let i = 0; i < cols; i++) {
-        grid[i] = new Array(rows);
-    }
-
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j] = new Cell(i, j);
-        }
-    }
-
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j].addNeighbours(grid);
-        }
-    }
+    initGame();
 }
 
 function draw() {
@@ -58,11 +34,42 @@ function draw() {
     }
 }
 
-let timer = setInterval(function() {
-    time++;
-    time = ("00" + time).slice(-3);
+function initGame() {
+    grid = new Array(cols);
+    amountBombs = 40;
+    amountFlags = amountBombs;
+    bombsPlaced = false;
+    gameOver = false;
+    youWon = false;
+    time = "000";
 
-}, 1000);
+    for (let i = 0; i < cols; i++) {
+        grid[i] = new Array(rows);
+    }
+
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j] = new Cell(i, j);
+        }
+    }
+
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j].addNeighbours(grid);
+        }
+    }
+
+    startTimer();
+}
+function startTimer() {
+    timer = setInterval(function() {
+    if(!gameOver) {
+        time++;
+        time = ("00" + time).slice(-3);
+    }
+
+    }, 1000);
+}
 
 function mousePressed() {
     if (!gameOver) {
@@ -206,6 +213,23 @@ function checkWon() {
 
     if(c == amountBombs) return true;
     return false;
+}
+
+function restartGame() {
+    let cell = eachCell();
+    let currentCell = cell.next();
+
+    initGame();
+
+    while(!currentCell.done) {
+        currentCell.isRevealed = false;
+        currentCell.marked = false;
+        currentCell.hasBomb = false;
+        currentCell.value = 0;
+
+        currentCell = cell.next();
+
+    }
 }
 
 // function isInList(list, item) {
