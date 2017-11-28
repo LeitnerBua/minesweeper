@@ -35,6 +35,7 @@ function draw() {
 }
 
 function initGame() {
+    clearInterval(timer);
     grid = new Array(cols);
     amountBombs = 40;
     amountFlags = amountBombs;
@@ -67,7 +68,6 @@ function startTimer() {
         time++;
         time = ("00" + time).slice(-3);
     }
-
     }, 1000);
 }
 
