@@ -4,4 +4,4 @@
 
 ## Live Demo
 
-[minesweeper](https://leitnerbua.github.io/minesweeper)
+[minesweeper](https://leitnerdominik.github.io/minesweeper)
